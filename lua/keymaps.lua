@@ -47,4 +47,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 vim.keymap.set('n', '<C-s>', '<cmd>w<CR>', { desc = 'Save file' })
 vim.keymap.set('n', '<C-c>', '<cmd>bd<CR>', { desc = 'Close buffer' })
+
+-- Toogle copilot chat
+vim.keymap.set('n', '<leader>cp', '<cmd>CopilotChatToggle<CR>', { desc = 'Toggle Copilot chat' })
 -- vim: ts=2 sts=2 sw=2 et
