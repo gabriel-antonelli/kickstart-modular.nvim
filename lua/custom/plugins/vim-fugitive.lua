@@ -38,10 +38,6 @@ return {
     { '<leader>gb', ':Git branch<CR>', desc = 'Git branches' },
     { '<leader>gm', ':Git merge ', desc = 'Git merge' },
 
-    -- Stashing
-    { '<leader>gst', ':Git stash<CR>', desc = 'Git stash' },
-    { '<leader>gsp', ':Git stash pop<CR>', desc = 'Git stash pop' },
-
     -- Browse files at current commit
     { '<leader>gB', ':GBrowse<CR>', desc = 'Git browse online' },
     { '<leader>gcp', ':Gcommitpr<CR>', desc = 'Git commit with preview' },
