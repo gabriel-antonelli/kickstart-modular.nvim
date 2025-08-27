@@ -20,24 +20,28 @@ require('lazy').setup({
   -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded.
   --
 
-  -- modular approach: using `require 'path/name'` will
+  -- modular approach: using `require 'path.name'` will
   -- include a plugin definition from file lua/path/name.lua
 
-  require 'kickstart/plugins/which-key',
+  require 'kickstart.plugins.gitsigns',
 
-  require 'kickstart/plugins/telescope',
+  require 'kickstart.plugins.which-key',
 
-  require 'kickstart/plugins/lspconfig',
+  require 'kickstart.plugins.telescope',
 
-  require 'kickstart/plugins/conform',
+  require 'kickstart.plugins.lspconfig',
 
-  require 'kickstart/plugins/blink-cmp',
+  require 'kickstart.plugins.conform',
 
-  require 'kickstart/plugins/todo-comments',
+  require 'kickstart.plugins.blink-cmp',
 
-  require 'kickstart/plugins/mini',
+  require 'kickstart.plugins.tokyonight',
 
-  require 'kickstart/plugins/treesitter',
+  require 'kickstart.plugins.todo-comments',
+
+  require 'kickstart.plugins.mini',
+
+  require 'kickstart.plugins.treesitter',
 
   require 'kickstart/plugins/neo-tree',
 
