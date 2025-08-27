@@ -207,10 +207,43 @@ return {
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+
+      -- Get Python path dynamically from asdf
+      local handle = io.popen 'asdf which python 2>/dev/null'
+      local python_path = handle:read('*a'):gsub('\n', '') -- Trim whitespace
+      handle:close()
+
+      -- Fallback to system Python if asdf fails
+      if python_path == '' then
+        python_path = vim.fn.exepath 'python3' or 'python'
+      end
+      -- Extract Python version and build site-packages path
+      local site_packages_path = nil
+      if python_path:match '/.asdf/' then -- Only process asdf-managed Python
+        -- Get Python version from path (e.g., "3.13.3" from ".../python/3.13.3/bin/python")
+        local version = python_path:match '/python/([%d%.]+)/bin/python'
+
+        -- Convert to major.minor format (e.g., "3.13")
+        local major_minor = version and version:match '^(%d+%.%d+)'
+
+        if major_minor then
+          -- Build full site-packages path
+          local base_path = python_path:match '(.*)/bin/python'
+          site_packages_path = base_path .. '/lib/python' .. major_minor .. '/site-packages'
+
+          -- Verify path exists
+          if vim.fn.isdirectory(site_packages_path) ~= 1 then
+            site_packages_path = nil -- Skip if invalid
+          end
+        end
+      end
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {
+          python_path = python_path,
+          extra_path = site_packages_path,
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -253,6 +286,7 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'pyright', -- Python LSP
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
