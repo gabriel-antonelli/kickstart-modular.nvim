@@ -1,4 +1,4 @@
-return {
+iireturn {
   'olimorris/codecompanion.nvim',
   version = '^18.0.0',
   dependencies = {
@@ -78,7 +78,7 @@ return {
 
       prompt_library = {
         ['Direct Edit'] = {
-          strategy = 'agent',
+          strategy = 'chat',
           description = ' Direct edits to current buffer',
           opts = {
             index = 13,
@@ -97,7 +97,7 @@ return {
             },
             {
               role = 'user',
-              content = 'I want you to',
+              content = '@{insert_edit_into_file} #{buffer}',
               opts = {
                 contains_code = true,
               },
