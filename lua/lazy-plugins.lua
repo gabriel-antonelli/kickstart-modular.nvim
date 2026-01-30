@@ -49,7 +49,6 @@ require('lazy').setup({
   require 'custom/plugins/catppuccin',
   require 'custom/plugins/toggleterm',
   require 'custom/plugins/bufferline',
-  require 'custom.plugins/copilot-chat',
   require 'custom.plugins/formatting',
   require 'custom.plugins/vim-fugitive',
   require 'custom.plugins/codecompanion',
