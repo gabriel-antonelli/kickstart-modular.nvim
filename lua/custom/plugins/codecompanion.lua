@@ -77,27 +77,43 @@ return {
       },
 
       prompt_library = {
-        ['Direct Edit'] = {
+        ['Agent Edit'] = {
           strategy = 'chat',
           description = ' Direct edits to current buffer',
           opts = {
             index = 13,
             is_default = true,
             modes = { 'v', 'n' },
-            short_name = 'edit',
+            alias = 'direct',
             auto_submit = false,
           },
           prompts = {
             {
               role = 'system',
-              content = 'You are a code editor. Make the requested changes and return ONLY the modified code, nothing else.',
+              content = [[You are a senior software engineer. You will read the entire buffer and perform the requested task directly, without asking for further instructions unless clarification is absolutely necessary.
+
+Capabilities available to you:
+- Edit the buffer directly using insert_edit_into_file.
+- Run shell commands with cmd_runner.
+- Create, delete, and search for files.
+- List code usages and perform codebase-wide refactoring.
+- Read and analyze any file in the workspace.
+
+How to use your capabilities:
+- If asked to make a change, use the buffer context and perform the edit immediately.
+- If a task requires multiple steps, complete each step fully before asking for further input.
+- Do not ask the user to do something that you can do yourself with your available tools.
+- Only ask for clarification if the request is ambiguous or unsafe.
+- Always keep the buffer context up to date and use it as the source of truth.
+
+You are expected to act autonomously and efficiently, as a reliable coding agent.]],
               opts = {
                 visible = false,
               },
             },
             {
               role = 'user',
-              content = '@{insert_edit_into_file} #{buffer}',
+              content = '@{full_stack_dev} #{buffer}{all} I want you to',
               opts = {
                 contains_code = true,
               },
@@ -111,7 +127,7 @@ return {
             index = 1,
             is_default = true,
             modes = { 'v' },
-            short_name = 'explain',
+            alias = 'explain',
             auto_submit = false,
           },
           prompts = {
@@ -139,7 +155,7 @@ return {
             index = 2,
             is_default = true,
             modes = { 'v' },
-            short_name = 'review',
+            alias = 'review',
           },
           prompts = {
             {
@@ -166,7 +182,7 @@ return {
             index = 3,
             is_default = true,
             modes = { 'v' },
-            short_name = 'fix',
+            alias = 'fix',
           },
           prompts = {
             {
@@ -186,7 +202,7 @@ return {
             index = 4,
             is_default = true,
             modes = { 'v' },
-            short_name = 'tests',
+            alias = 'tests',
           },
           prompts = {
             {
@@ -213,7 +229,7 @@ return {
             index = 5,
             is_default = true,
             modes = { 'v' },
-            short_name = 'optimize',
+            alias = 'optimize',
           },
           prompts = {
             {
@@ -233,7 +249,7 @@ return {
             index = 6,
             is_default = true,
             modes = { 'v' },
-            short_name = 'refactor',
+            alias = 'refactor',
           },
           prompts = {
             {
@@ -252,7 +268,7 @@ return {
           opts = {
             index = 7,
             modes = { 'v' },
-            short_name = 'comment',
+            alias = 'comment',
           },
           prompts = {
             {
@@ -271,7 +287,7 @@ return {
           opts = {
             index = 8,
             modes = { 'v' },
-            short_name = 'docs',
+            alias = 'docs',
           },
           prompts = {
             {
@@ -291,7 +307,7 @@ return {
             index = 9,
             is_default = true,
             modes = { 'v' },
-            short_name = 'debug',
+            alias = 'debug',
           },
           prompts = {
             {
@@ -310,7 +326,7 @@ return {
           opts = {
             index = 10,
             modes = { 'v' },
-            short_name = 'simplify',
+            alias = 'simplify',
           },
           prompts = {
             {
@@ -330,7 +346,7 @@ return {
             index = 11,
             is_default = true,
             modes = { 'n', 'v' },
-            short_name = 'ask',
+            alias = 'ask',
             user_prompt = true,
           },
           prompts = {
@@ -350,7 +366,7 @@ return {
           opts = {
             index = 12,
             modes = { 'n', 'v' },
-            short_name = 'custom',
+            alias = 'custom',
             user_prompt = true,
           },
           prompts = {
@@ -384,9 +400,9 @@ return {
     {
       '<leader>ad',
       function()
-        require('codecompanion').prompt 'edit'
+        require('codecompanion').prompt 'direct'
       end,
-      desc = 'Direct Edit Buffer',
+      desc = 'Agent Edit Buffer',
       mode = { 'n', 'v' },
     },
     {
